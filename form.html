@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FORM</title>
+  <style>
+    .container {
+      width: 500px;
+      height: auto;
+      text-align: center;
+      line-height: 50px;
+      border: 1px solid black;
+      border-radius: 20px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    label {
+      font-family: 'Gill Sans', Calibri, sans-serif;
+      font-size: 20px;
+    }
+
+    input {
+      height: 25px;
+      border-radius: 15px;
+      border: 1px solid black;
+      padding: 5px;
+      text-indent: 5px;
+      width: 60%;
+    }
+
+    input[type="submit"] {
+      height: 40px;
+      width: 60%;
+      margin: 10px;
+      cursor: pointer;
+    }
+
+    #chart {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 30px;
+    }
+  </style>
+
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- SheetJS CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+<body>
+
+  <div class="container">
+    <h1>FILL THE FORM</h1>
+    <label for="name">NAME:</label>
+    <input type="text" id="name"><br>
+    <label for="dept">Dept:</label>
+    <input type="text" id="dept"><br>
+    <label for="age">Age:</label>
+    <input type="number" id="age"><br>
+    <label for="inc">Income:</label>
+    <input type="number" id="inc"><br>
+    <label for="exp">Expenses:</label>
+    <input type="number" id="exp"><br><br>
+
+    <input type="submit" value="ADD CONTENT" onclick="values()"><br>
+    <input type="submit" value="EXPORT EXCEL" onclick="expot()">
+
+    <p id="result"></p>
+    <div id="chart">
+      <canvas id="barChart" width="500" height="300"></canvas>
+    </div>
+  </div>
+
+  <script>
+  let ff = JSON.parse(localStorage.getItem("formData")) || [];
+
+  // Populate chart or message on reload
+  window.onload = function () {
+    if (ff.length > 0) {
+      document.getElementById("result").innerHTML = "<h3>Data loaded from previous session.</h3>";
+    }
+  };
+
+  function values() {
+    let name = document.getElementById("name").value;
+    let dept = document.getElementById("dept").value;
+    let age = document.getElementById("age").value;
+    let inc = parseInt(document.getElementById("inc").value) || 0;
+    let exp = parseInt(document.getElementById("exp").value) || 0;
+
+    ff.push({ name, dept, age, inc, exp });
+
+    // Save to localStorage
+    localStorage.setItem("formData", JSON.stringify(ff));
+
+    document.getElementById("result").innerHTML = "<h3>Added Successfully!!</h3>";
+    document.getElementById("name").value = "";
+    document.getElementById("dept").value = "";
+    document.getElementById("age").value = "";
+    document.getElementById("inc").value = "";
+    document.getElementById("exp").value = "";
+  }
+
+  function expot() {
+    if (ff.length === 0) {
+      alert("Enter value first");
+      return;
+    }
+
+    let wb = XLSX.utils.book_new();
+    let ws = XLSX.utils.json_to_sheet(ff);
+    XLSX.utils.book_append_sheet(wb, ws, "Income_Expenses");
+    XLSX.writeFile(wb, "MyFile.xlsx");
+  }
+</script>
+
+</body>
+</html>

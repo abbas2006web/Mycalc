@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <link rel="icon" href="image.png" type="image/x-icon">
+</head>
+<style>
+   
+    *{
+        margin: 0;
+        padding: 0;
+
+        
+        
+    }
+    body{
+     min-height: 100vh;
+     
+        background-image: linear-gradient(teal,blue,skyblue);
+        background-repeat: no-repeat;
+        
+    }
+    .container{
+       
+        width: 500px;
+        height: auto;
+        margin: auto;
+        border: 1px solid grey;
+        padding: 20px;
+        border-radius: 50px;
+        background-color: wheat;
+    }
+    input{
+        display: flex;
+        flex-direction: row;
+        width: 98%;
+        height: 60px;
+        border-radius: 50px;
+        text-indent: 100px;
+        font-size: 50px;
+    }
+    .buttons{
+        /* display: grid; */
+        width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 10px;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    
+    }
+    button{
+        font-size: 30px;
+        width: 100px;
+        height: 100px;
+        background-color: rgb(241, 239, 239);
+        border: none;
+        border-radius: 50px;
+
+    }
+</style>
+<body>
+<br><br><br><br>
+    <div class="container">
+
+        <input type="text" id="display">
+        <br>
+        <div class="buttons">
+        <button class="operator" style="background-color: red; color: white;" onclick="AC()">AC</button>
+        <button class="operator" onclick="append('/')">/</button>
+        <button class="operator" onclick="append('*')">X</button>
+        <button class="operator" onclick="cleard()">Back </button>
+
+
+        <button class="operator" onclick="append('7')">7</button>
+        <button class="operator" onclick="append('8')">8</button>
+        <button class="operator" onclick="append('9')">9</button>
+        <button class="operator" onclick="append('-')">-</button>
+
+<button class="operator" onclick="append('4')">4</button>
+        <button class="operator" onclick="append('5')">5</button>
+        <button class="operator" onclick="append('6')">6</button>
+        <button class="operator" onclick="append('+')">+</button>
+
+        <button class="operator" onclick="append('1')">1</button>
+        <button class="operator" onclick="append('2')">2</button>
+        <button class="operator" onclick="append('3')">3</button>
+        <button class="operator" style="background-color: blue;color: white;" onclick="result()">=</button>
+        
+
+        <button class="operator" onclick="append('0')">0</button>
+        <button class="operator" onclick="append('.')">.</button>
+
+
+</div>
+
+    </div>
+    
+    <script>
+
+        var display = document.getElementById("display");
+display.value="";
+
+function append(value){
+    console.log(value);
+    display.value+=value;
+
+}
+function AC(){
+    display.value="";
+}
+
+function cleard(){
+    display.value=display.value.slice(0,-1);
+}
+function result(){
+
+    display.value = eval(display.value);
+}
+
+//key
+
+document.addEventListener("keydown",(event)=>{
+const key = event.key;
+
+if("0123456789+-*/.".includes(key)){
+append(key);
+}else if(key==="Enter" || key === "="){
+    result();
+}else if(key==="Escape" || key==="c" || key==="C"){
+AC();
+}else if(key==="Backspace"){
+cleard();
+}
+});
+    </script>
+</body>
+</html>
